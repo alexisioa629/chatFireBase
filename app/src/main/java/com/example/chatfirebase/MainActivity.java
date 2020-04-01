@@ -1,5 +1,7 @@
 package com.example.chatfirebase;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +14,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class MainActivity extends AppCompatActivity {
     private ImageView imagenPerfilJ;
     private TextView textViewNombreJ;
@@ -20,7 +28,10 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonEnviarJ;
 
     //herramientas para la base de datos.
-   // private FireBaseDataBase dataBase;
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
+
+
 
     //instanciar la clase adptador
     private Adaptador adaptador;
@@ -30,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         conexionElementosVista();
+    //inicializar objetos de data base
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference("chat");//sala de chat
+
+
         //instanciar la clase adptador
         adaptador= new Adaptador(this);
         LinearLayoutManager layout= new LinearLayoutManager(this);
@@ -38,14 +54,18 @@ public class MainActivity extends AppCompatActivity {
         //agregar el adaptador
         contenedorMensajeJ.setAdapter(adaptador);
 
+
         //darle accion al boton
         buttonEnviarJ.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                adaptador.adaptarMensajes(new ModeloMensaje(editTextMensajeJ.getText().toString(),textViewNombreJ.getText().toString(),"00:00","1"));
+                //enviar el sms a la base de datos
+              databaseReference.push().setValue(new ModeloMensaje(editTextMensajeJ.getText().toString(),textViewNombreJ.getText().toString(),"00:00","1"));
                 editTextMensajeJ.setText("");
             }
         });
+
+
     //importar metodo para que vaya bajando los mensajes en la pantalla
         adaptador.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
@@ -57,10 +77,37 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-    }
-    //metodo para bajar la pantall
-    public void scrollBar(){
-        contenedorMensajeJ.scrollToPosition(adaptador.getItemCount()-1);
+        //agregar un hijo a la referencia
+        databaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            //metodo para mostrar en la lista lo de la base de datos
+                ModeloMensaje m= dataSnapshot.getValue(ModeloMensaje.class);
+                //fijar el
+                adaptador.adaptarMensajes(m);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     public void conexionElementosVista(){
@@ -70,4 +117,16 @@ public class MainActivity extends AppCompatActivity {
         editTextMensajeJ= (EditText) findViewById(R.id.txtMensaje);
         buttonEnviarJ= (Button) findViewById(R.id.btnEnviar);
     }
+    //metodo para bajar la pantall
+    public void scrollBar(){
+        contenedorMensajeJ.scrollToPosition(adaptador.getItemCount()-1);
+    }
+
+
+
+
+
+
+
+
 }
