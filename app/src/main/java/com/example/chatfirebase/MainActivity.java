@@ -6,10 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,10 +24,11 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
     private ImageView imagenPerfilJ;
-    private TextView textViewNombreJ;
+    private EditText editTextNombreJ;
     private RecyclerView contenedorMensajeJ;
     private EditText editTextMensajeJ;
     private Button buttonEnviarJ;
+    private ImageButton imageButtonGaleriaJ;
 
     //herramientas para la base de datos.
     private FirebaseDatabase database;
@@ -55,13 +58,24 @@ public class MainActivity extends AppCompatActivity {
         contenedorMensajeJ.setAdapter(adaptador);
 
 
-        //darle accion al boton
+        //darle accion al boton enviar
         buttonEnviarJ.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //enviar el sms a la base de datos
-              databaseReference.push().setValue(new ModeloMensaje(editTextMensajeJ.getText().toString(),textViewNombreJ.getText().toString(),"00:00","1"));
+              databaseReference.push().setValue(new ModeloMensaje(editTextMensajeJ.getText().toString(),editTextNombreJ.getText().toString(),"00:00","1"));
                 editTextMensajeJ.setText("");
+            }
+        });
+        //darle accion al boton de galeria
+        imageButtonGaleriaJ.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //intent para abrir la galeria del telefono
+                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+                i.setType("image/jpeg");// tipo de intent
+                i.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
+                startActivityForResult(Intent.createChooser(i,"Selecciona una Imagen"),1);
             }
         });
 
@@ -112,17 +126,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void conexionElementosVista(){
         imagenPerfilJ=(ImageView) findViewById(R.id.imageViewFotoPerfil);
-        textViewNombreJ= (TextView) findViewById(R.id.textViewNombreUsuario);
+        editTextNombreJ= (EditText) findViewById(R.id.editTextNombreUsuario);
         contenedorMensajeJ= (RecyclerView) findViewById(R.id.contenedorMensaje);
         editTextMensajeJ= (EditText) findViewById(R.id.txtMensaje);
         buttonEnviarJ= (Button) findViewById(R.id.btnEnviar);
+        imageButtonGaleriaJ= (ImageButton) findViewById(R.id.imagenButtonGaleria);
     }
     //metodo para bajar la pantall
     public void scrollBar(){
         contenedorMensajeJ.scrollToPosition(adaptador.getItemCount()-1);
     }
+///////////////////2020-04-01
+protected void onActivityResult(){
 
-
+}
 
 
 
