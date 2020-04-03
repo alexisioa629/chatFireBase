@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +18,6 @@ public class Adaptador extends RecyclerView.Adapter<HolderMensajes> {
 
     //generar lista desde el adaptador
     private List<ModeloMensaje> listMensaje = new ArrayList<>();
-
-
     private Context contexto;
         //constructor para traer el contexto
     public Adaptador(Context contexto) {
@@ -28,23 +29,29 @@ public class Adaptador extends RecyclerView.Adapter<HolderMensajes> {
         listMensaje.add(m);
         //metodo para avisar cuando se crea un nuevo mensaje
         notifyItemInserted(listMensaje.size());
-
     }
-
     @Override
     public HolderMensajes onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v= LayoutInflater.from(contexto).inflate(R.layout.activity_diseno_mensajes,parent,false);
         //retorna la vista
         return new HolderMensajes(v);
     }
-
     @Override
     public void onBindViewHolder(@NonNull HolderMensajes holder, int position) {
         //setear el mensaje desde el holder mensaje
-        holder.getTextViewNombreUsuariJ().setText(listMensaje.get(position).getNombreU());
-        holder.getTextViewMensajeJ().setText(listMensaje.get(position).getMensajeU());
-        holder.getTextViewHoraJ().setText(listMensaje.get(position).getHoraU());
+        holder.getNombreUsuario().setText(listMensaje.get(position).getNombreU());
+        holder.getTextoMensajes().setText(listMensaje.get(position).getMensajeU());
+        holder.getHora().setText(listMensaje.get(position).getHoraU());
 
+        if (listMensaje.get(position).getTipoMensaje()=="2"){
+            holder.getTextoMensajes().setVisibility(View.VISIBLE);
+            holder.getMensajeDEimagen().setVisibility(View.VISIBLE);
+            Glide.with(contexto).load(listMensaje.get(position).getUrlImagenMensaje()).into(holder.getMensajeDEimagen());
+
+      }else if (listMensaje.get(position).getTipoMensaje()=="1"){
+            holder.getTextoMensajes().setVisibility(View.VISIBLE);
+            holder.getMensajeDEimagen().setVisibility(View.GONE);
+        }
     }
 
     @Override

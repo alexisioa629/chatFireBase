@@ -9,48 +9,59 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class HolderMensajes extends RecyclerView.ViewHolder {
 
-    private TextView textViewNombreUsuariJ;
-    private TextView textViewMensajeJ;
-    private TextView textViewHoraJ;
-    private ImageView imagenSmsJ;
+    private TextView nombreUsuario;
+    private TextView textoMensajes;
+    private TextView hora;
+    private ImageView mensajeDEimagen;
+    private ImageView fotoPerfil;
 
-    public TextView getTextViewNombreUsuariJ() {
-        return textViewNombreUsuariJ;
-    }
-
-    public void setTextViewNombreUsuariJ(TextView textViewNombreUsuariJ) {
-        this.textViewNombreUsuariJ = textViewNombreUsuariJ;
-    }
-
-    public TextView getTextViewMensajeJ() {
-        return textViewMensajeJ;
-    }
-
-    public void setTextViewMensajeJ(TextView textViewMensajeJ) {
-        this.textViewMensajeJ = textViewMensajeJ;
-    }
-
-    public TextView getTextViewHoraJ() {
-        return textViewHoraJ;
-    }
-
-    public void setTextViewHoraJ(TextView textViewHoraJ) {
-        this.textViewHoraJ = textViewHoraJ;
-    }
-
-    public ImageView getImagenSmsJ() {
-        return imagenSmsJ;
-    }
-
-    public void setImagenSmsJ(ImageView imagenSmsJ) {
-        this.imagenSmsJ = imagenSmsJ;
-    }
 
     public HolderMensajes(@NonNull View itemView) {
         super(itemView);
-        textViewNombreUsuariJ= (TextView) itemView.findViewById(R.id.textViewNombreDiseno);
-        textViewMensajeJ= (TextView) itemView.findViewById(R.id.textViewMensajeDiseno);
-        textViewHoraJ=(TextView) itemView.findViewById(R.id.textViewHoraDiseno);
-        imagenSmsJ=(ImageView)itemView.findViewById(R.id.imageViewPerfilDiseno);
+        nombreUsuario = (TextView) itemView.findViewById(R.id.textViewNombreDiseno);
+        textoMensajes = (TextView) itemView.findViewById(R.id.textViewMensajeDiseno);
+        hora = (TextView) itemView.findViewById(R.id.textViewHoraDiseno);
+        mensajeDEimagen = (ImageView) itemView.findViewById(R.id.imagenMensajeDiseno);
+        fotoPerfil = (ImageView) itemView.findViewById(R.id.imageViewPerfilDiseno);
+    }
+
+    public TextView getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(TextView nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
+    public TextView getTextoMensajes() {
+        return textoMensajes;
+    }
+
+    public void setTextoMensajes(TextView textoMensajes) {
+        this.textoMensajes = textoMensajes;
+    }
+
+    public TextView getHora() {
+        return hora;
+    }
+
+    public void setHora(TextView hora) {
+        this.hora = hora;
+    }
+
+    public ImageView getMensajeDEimagen() {
+        return mensajeDEimagen;
+    }
+
+    public void setMensajeDEimagen(ImageView mensajeDEimagen) {
+        this.mensajeDEimagen = mensajeDEimagen;
+    }
+
+    public ImageView getFotoPerfil() {
+        return fotoPerfil;
+    }
+
+    public void setFotoPerfil(ImageView fotoPerfil) {
+        this.fotoPerfil = fotoPerfil;
     }
 }
