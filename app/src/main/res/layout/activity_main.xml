@@ -37,7 +37,7 @@
                     android:layout_height="55dp"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="Usuario"
+                    android:hint="Ingrese aqui se Nombre"
                     android:inputType="textPersonName" />
 
                 <androidx.appcompat.widget.AppCompatImageButton
@@ -45,7 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@android:drawable/stat_notify_chat" />
+                    android:src="@drawable/eraser_1200" />
 
             </LinearLayout>
 
@@ -55,7 +55,8 @@
             android:id="@+id/contenedorMensaje"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -87,7 +88,9 @@
                     android:id="@+id/btnEnviar"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Enviar" />
+                    android:text="Enviar"
+                    android:background="@color/cardview_dark_background"
+                    android:textColor="@color/cardview_light_background"/>
 
             </LinearLayout>
 

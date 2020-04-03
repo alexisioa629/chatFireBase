@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         contenedorMensajeJ.setAdapter(adaptador);
 
 
-        final Date time = new Date();
+        final Date time1 = new Date();
         final DateFormat hourFormat = new SimpleDateFormat("HH:mm");
 
         //darle accion al boton enviar
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //obtener la hora
-                String hora= hourFormat.format(time);
+                String hora= hourFormat.format(time1);
                     //enviar el sms a la base de datos
                      databaseReference.push().setValue(new ModeloMensaje(MensajeJ.getText().toString(),"",  NombreJ.getText().toString(), "", hora, "1"));
                      MensajeJ.setText("");
@@ -120,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
                 NombreJ.setText("");
             }
         });
-        //darle accion para seleccionar foto de perfil
 
     //importar metodo para que vaya bajando los mensajes en la pantalla
         adaptador.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
@@ -166,11 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //metodo para bajar la pantall
-    public void scrollBar(){
-        contenedorMensajeJ.scrollToPosition(adaptador.getItemCount()-1);
-    }
-///////////////////2020-04-01
+
 
    /* @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable final Intent data) {
@@ -192,6 +187,9 @@ public class MainActivity extends AppCompatActivity {
     }*/
        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+           final Date time2 = new Date();
+           final DateFormat hourFormat = new SimpleDateFormat("HH:mm");
+           final String hora2=hourFormat.format(time2);
         try {
             if (requestCode == numEnviarFoto && resultCode == RESULT_OK) {
                 Uri u = data.getData();
@@ -207,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
                         ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                ModeloMensaje m= new ModeloMensaje((NombreJ.getText().toString()+" Envio una Imagen"),uri.toString(),NombreJ.getText().toString(),"","00:00","2");
+                                ModeloMensaje m= new ModeloMensaje((" Envio una Imagen"),uri.toString(),NombreJ.getText().toString(),"",hora2,"2");
                                 databaseReference.push().setValue(m);
 
                             }
@@ -226,5 +224,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(){
 
 }
+    //metodo para bajar la pantall
+    public void scrollBar(){
+        contenedorMensajeJ.scrollToPosition(adaptador.getItemCount()-1);
+    }
 
 }
