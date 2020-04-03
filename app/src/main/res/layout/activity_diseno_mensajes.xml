@@ -1,105 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5sp"
-    android:paddingStart="5sp"
-    android:paddingLeft="5sp"
-    android:paddingTop="5sp"
-    android:paddingEnd="5sp"
-    android:paddingRight="5sp"
-    android:paddingBottom="5sp"
-    tools:context=".DisenoMensajes">
+    cardview:cardCornerRadius="12sp">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="351dp"
-        android:layout_height="80dp"
-        tools:layout_editor_absoluteX="5dp"
-        tools:layout_editor_absoluteY="5dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10sp">
+            <ImageView
+                android:id="@+id/imageViewPerfilDiseno"
+                android:layout_width="24sp"
+                android:layout_height="24sp"
+                android:src="@mipmap/ic_launcher"/>
+
+
+        </LinearLayout>
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
-
+            <!-- diseño de nombre y mensaje de la vista-->
             <LinearLayout
-                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:paddingStart="5sp">
-
-                    <ImageView
-                        android:id="@+id/imageViewPerfilDiseno"
-                        android:layout_width="20sp"
-                        android:layout_height="20sp"
-
-                        android:background="@color/cardview_dark_background"
-                        tools:srcCompat="@tools:sample/backgrounds/scenic[5]" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/textViewNombreDiseno"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:text="Usuario" />
-
-                        <TextView
-                            android:id="@+id/textViewHoraDiseno"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:hint="00:00"
-                            android:paddingLeft="10sp" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/textViewNombreDiseno"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:text="Usuario" />
+                <TextView
+                    android:id="@+id/textViewHoraDiseno"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00"/>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/textViewMensajeDiseno"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:paddingRight="10sp"
-                            android:visibility="gone" />
-
-                        <ImageView
-                            android:id="@+id/imagenMensajeDiseno"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:visibility="gone" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/textViewMensajeDiseno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sms"
+                android:visibility="gone" />
+            <ImageView
+                android:id="@+id/imagenMensajeDiseno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
         </LinearLayout>
+
+
+
+
+
+
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
     </androidx.cardview.widget.CardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
