@@ -172,27 +172,54 @@ public class MainActivity extends AppCompatActivity {
     }
 ///////////////////2020-04-01
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+   /* @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==numEnviarFoto && resultCode==RESULT_OK){
             Uri u = data.getData();
             //instanciar referencia de la base de datos de fotos
             referenceFotos=storageFotos.getReference("imagenesChat");//imagenes de los chats
-            final StorageReference fotoReferencia= referenceFotos.child(u.getLastPathSegment());// obtener la key de nuestras imagenes
-            fotoReferencia.putFile(u).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+           final StorageReference fotoReferencia2= referenceFotos.child(u.getLastPathSegment());// obtener la key de nuestras imagenes
+            fotoReferencia2.putFile(u).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-
-               Uri u= taskSnapshot.getUploadSessionUri();
-
+                    Uri u= taskSnapshot.getDownloadUrl();
                ModeloMensaje m= new ModeloMensaje((NombreJ.getText().toString()+" Envio una Imagen"),u.toString(),NombreJ.getText().toString(),"","00:00","2");
                databaseReference.push().setValue(m);
                 }
             });
+        }
+    }*/
+       protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            if (requestCode == numEnviarFoto && resultCode == RESULT_OK) {
+                Uri u = data.getData();
+
+                referenceFotos = storageFotos.getReference("imagenes_de_chat");
+                final StorageReference ref = referenceFotos.child("image "+u.getLastPathSegment());
+                ref.putFile(u).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
 
 
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                ModeloMensaje m= new ModeloMensaje((NombreJ.getText().toString()+" Envio una Imagen"),uri.toString(),NombreJ.getText().toString(),"","00:00","2");
+                                databaseReference.push().setValue(m);
+
+                            }
+                        });
+
+                        // mensajito msj = new mensajito(nombre1.getText().toString(), "Josue ha enviado una foto", ur.getResult().toString(), "2", "", "00:00");
+                        //databaseReference.push().setValue(msj);
+                    }
+                });
+            }
+        }catch (Exception ex){
+            Toast.makeText(this, "Error " + ex.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
