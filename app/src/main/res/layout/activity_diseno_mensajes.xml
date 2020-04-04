@@ -19,7 +19,8 @@
                 android:id="@+id/imageViewPerfilDiseno"
                 android:layout_width="24sp"
                 android:layout_height="24sp"
-                android:src="@mipmap/ic_launcher"/>
+                android:background="@color/colorPrimaryDark"
+                android:src="@android:drawable/stat_notify_chat"/>
 
 
         </LinearLayout>
@@ -54,13 +55,13 @@
                 android:id="@+id/textViewMensajeDiseno"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sms"
-                android:visibility="gone" />
+                android:text="Sms"/>
+
+                <!--android:visibility="gone"-->
             <ImageView
                 android:id="@+id/imagenMensajeDiseno"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 

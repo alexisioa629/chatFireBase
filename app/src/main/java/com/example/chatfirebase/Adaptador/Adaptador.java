@@ -1,4 +1,4 @@
-package com.example.chatfirebase;
+package com.example.chatfirebase.Adaptador;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.chatfirebase.Holder.HolderMensajes;
+import com.example.chatfirebase.Modelo.ModeloMensaje;
+import com.example.chatfirebase.R;
 
 
 import java.util.ArrayList;

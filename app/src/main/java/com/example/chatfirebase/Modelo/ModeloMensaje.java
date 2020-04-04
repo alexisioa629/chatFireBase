@@ -1,4 +1,4 @@
-package com.example.chatfirebase;
+package com.example.chatfirebase.Modelo;
 
 public class ModeloMensaje {
     private String mensajeU;

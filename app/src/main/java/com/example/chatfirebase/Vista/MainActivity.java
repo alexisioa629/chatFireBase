@@ -1,4 +1,4 @@
-package com.example.chatfirebase;
+package com.example.chatfirebase.Vista;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,14 +16,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.example.chatfirebase.Adaptador.Adaptador;
+import com.example.chatfirebase.Modelo.ModeloMensaje;
+import com.example.chatfirebase.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -80,23 +80,30 @@ public class MainActivity extends AppCompatActivity {
         contenedorMensajeJ.setLayoutManager(layout);
         //agregar el adaptador
         contenedorMensajeJ.setAdapter(adaptador);
-//acciones de botones
+
+
+//ACION DE BOTONES
 
         buttonEnviarJ.setOnClickListener(new View.OnClickListener() { //darle accion al boton enviar
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) {// boton de enviar un mensaje de texto
 
                 if (MensajeJ.getText().toString().isEmpty()) {
                     Toast.makeText(MainActivity.this, "Primero Escriba su Mensaje", Toast.LENGTH_SHORT).show();
                 }else{
+                    //obtener la hora y minutos
+                    DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+                    Date date = new Date();
+                    String hora= dateFormat.format(date);
+
                     //enviar el sms a la base de datos
-                    databaseReference.push().setValue(new ModeloMensaje(MensajeJ.getText().toString(), "", NombreJ.getText().toString(), "", "00:00", "1"));
+                    databaseReference.push().setValue(new ModeloMensaje(MensajeJ.getText().toString(), "", NombreJ.getText().toString(), "", hora, "1"));
                     MensajeJ.setText("");
 
                 }
             }
         });
-
+        //boton para enviar un mensaje de imagen
         imageButtonGaleriaJ.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {   //darle accion al boton de abrir galeria
@@ -106,6 +113,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(i,"Selecciona una Imagen"),numEnviarFoto);//metodo para obtener un codigo de la imagen que enviamos al metodo result
             }
         });
+
+
+
         //darle accion al boton de borrar nombre
         borrarNombre.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,6 +156,10 @@ public class MainActivity extends AppCompatActivity {
    //metodo para ver el resultado del intent que seleciona una foto y envia como mensaje
        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+           //obtener la hora y minutos
+           DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+           Date date = new Date();
+           final String hora= dateFormat.format(date);
                    try {
             if (requestCode == numEnviarFoto && resultCode == RESULT_OK) {
                 final Uri u = data.getData();//si seleciona la foto sin errores Uri contiene la url de la foto que seccionamos
@@ -161,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Uri u) {
                                 //crear un nuevo objeto de mensaje de imagen
-                                ModeloMensaje m= new ModeloMensaje("",u.toString(),NombreJ.getText().toString(),"","","2");
+                                ModeloMensaje m= new ModeloMensaje("",u.toString(),NombreJ.getText().toString(),"",hora,"2");
                                 databaseReference.push().setValue(m);// lo enviamos a la base de datos
                             }
                         });

@@ -1,8 +1,10 @@
-package com.example.chatfirebase;
+package com.example.chatfirebase.Vista;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.chatfirebase.R;
 
 public class DisenoMensajes extends AppCompatActivity {
 

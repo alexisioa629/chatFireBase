@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".Vista.MainActivity"
     android:padding="8sp"
     android:orientation="vertical">
 
@@ -18,20 +18,21 @@
             android:id="@+id/imageViewFotoPerfil"
             android:layout_width="48sp"
             android:layout_height="48sp"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/user_person_people_6100"
             />
         <EditText
             android:id="@+id/editTextNombreUsuario"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:hint="Ingrese aqui su Nombre"/>
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/borrarNombre"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:src="@drawable/eraser_1200"
             />
 
 
