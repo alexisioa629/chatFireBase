@@ -90,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if (MensajeJ.getText().toString().isEmpty()) {
                     Toast.makeText(MainActivity.this, "Primero Escriba su Mensaje", Toast.LENGTH_SHORT).show();
+                }else if(NombreJ.getText().toString().isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Primero Escriba su Nombre", Toast.LENGTH_SHORT).show();
                 }else{
                     //obtener la hora y minutos
                     DateFormat dateFormat = new SimpleDateFormat("HH:mm");
