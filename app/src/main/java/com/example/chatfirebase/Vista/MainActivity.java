@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -67,9 +68,6 @@ public class MainActivity extends AppCompatActivity {
         borrarNombre=(ImageButton) findViewById(R.id.borrarNombre);
 
 
-
-
-
     //inicializar objetos de data base de mensajes
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("chat");//carpeta de mensajes en base de datos
@@ -82,37 +80,32 @@ public class MainActivity extends AppCompatActivity {
         contenedorMensajeJ.setLayoutManager(layout);
         //agregar el adaptador
         contenedorMensajeJ.setAdapter(adaptador);
+//acciones de botones
 
-
-        final Date time1 = new Date();
-        final DateFormat hourFormat = new SimpleDateFormat("HH:mm");
-
-        //darle accion al boton enviar
-        buttonEnviarJ.setOnClickListener(new View.OnClickListener() {
+        buttonEnviarJ.setOnClickListener(new View.OnClickListener() { //darle accion al boton enviar
             @Override
             public void onClick(View v) {
-                //obtener la hora
-                String hora= hourFormat.format(time1);
-                    //enviar el sms a la base de datos
-                     databaseReference.push().setValue(new ModeloMensaje(MensajeJ.getText().toString(),"",  NombreJ.getText().toString(), "", hora, "1"));
-                     MensajeJ.setText("");
 
+                if (MensajeJ.getText().toString().isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Primero Escriba su Mensaje", Toast.LENGTH_SHORT).show();
+                }else{
+                    //enviar el sms a la base de datos
+                    databaseReference.push().setValue(new ModeloMensaje(MensajeJ.getText().toString(), "", NombreJ.getText().toString(), "", "00:00", "1"));
+                    MensajeJ.setText("");
+
+                }
             }
         });
 
-
-        //darle accion al boton de galeria
         imageButtonGaleriaJ.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                //intent para abrir la galeria del telefono
-                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-                i.setType("image/jpeg");// tipo de intent
+            public void onClick(View v) {   //darle accion al boton de abrir galeria
+                Intent i = new Intent(Intent.ACTION_GET_CONTENT);//intent para abrir la galeria del telefono
+                i.setType("image/jpeg");// tipo de intent para seleccionar imagenes
                 i.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
-                startActivityForResult(Intent.createChooser(i,"Selecciona una Imagen"),numEnviarFoto);
+                startActivityForResult(Intent.createChooser(i,"Selecciona una Imagen"),numEnviarFoto);//metodo para obtener un codigo de la imagen que enviamos al metodo result
             }
         });
-
         //darle accion al boton de borrar nombre
         borrarNombre.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,101 +123,58 @@ public class MainActivity extends AppCompatActivity {
                 scrollBar();
             }
         });
-
-
-        //agregar un hijo a la referencia
+        //agregar un hijo a la referencia de la base de datos
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
+            //metodo para agregar mis datos a la lista
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            //metodo para mostrar en la lista lo de la base de datos
-                ModeloMensaje m= dataSnapshot.getValue(ModeloMensaje.class);
-                //fijar el
-                adaptador.adaptarMensajes(m);
+                ModeloMensaje m= dataSnapshot.getValue(ModeloMensaje.class);//metodo para mostrar en la lista lo que obtengo de la base de datos
+                adaptador.adaptarMensajes(m);//fijar los datos adaptador
             }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {            }
 
             @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {            }
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError databaseError) {            }
         });
 
     }
-
-
-
-   /* @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable final Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==numEnviarFoto && resultCode==RESULT_OK){
-            Uri u = data.getData();
-            //instanciar referencia de la base de datos de fotos
-            referenceFotos=storageFotos.getReference("imagenesChat");//imagenes de los chats
-           final StorageReference fotoReferencia2= referenceFotos.child(u.getLastPathSegment());// obtener la key de nuestras imagenes
-            fotoReferencia2.putFile(u).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Uri u= taskSnapshot.getDownloadUrl();
-               ModeloMensaje m= new ModeloMensaje((NombreJ.getText().toString()+" Envio una Imagen"),u.toString(),NombreJ.getText().toString(),"","00:00","2");
-               databaseReference.push().setValue(m);
-                }
-            });
-        }
-    }*/
+   //metodo para ver el resultado del intent que seleciona una foto y envia como mensaje
        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-           final Date time2 = new Date();
-           final DateFormat hourFormat = new SimpleDateFormat("HH:mm");
-           final String hora2=hourFormat.format(time2);
-        try {
+                   try {
             if (requestCode == numEnviarFoto && resultCode == RESULT_OK) {
-                Uri u = data.getData();
+                final Uri u = data.getData();//si seleciona la foto sin errores Uri contiene la url de la foto que seccionamos
 
                 referenceFotos = storageFotos.getReference("imagenes_de_chat");
-                final StorageReference ref = referenceFotos.child("image "+u.getLastPathSegment());
+                final StorageReference ref = referenceFotos.child("imagenes"+u.getLastPathSegment());
                 ref.putFile(u).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
-
 
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                         ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
-                            public void onSuccess(Uri uri) {
-                                ModeloMensaje m= new ModeloMensaje((" Envio una Imagen"),uri.toString(),NombreJ.getText().toString(),"",hora2,"2");
-                                databaseReference.push().setValue(m);
-
+                            public void onSuccess(Uri u) {
+                                //crear un nuevo objeto de mensaje de imagen
+                                ModeloMensaje m= new ModeloMensaje("",u.toString(),NombreJ.getText().toString(),"","","2");
+                                databaseReference.push().setValue(m);// lo enviamos a la base de datos
                             }
                         });
-
-                        // mensajito msj = new mensajito(nombre1.getText().toString(), "Josue ha enviado una foto", ur.getResult().toString(), "2", "", "00:00");
-                        //databaseReference.push().setValue(msj);
                     }
                 });
             }
         }catch (Exception ex){
-            Toast.makeText(this, "Error " + ex.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Error al Enviar la Imagen " + ex.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
-    protected void onActivityResult(){
 
-}
-    //metodo para bajar la pantall
+    //metodo para bajar la pantalla
     public void scrollBar(){
         contenedorMensajeJ.scrollToPosition(adaptador.getItemCount()-1);
     }

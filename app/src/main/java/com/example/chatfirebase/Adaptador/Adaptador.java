@@ -42,11 +42,11 @@ public class Adaptador extends RecyclerView.Adapter<HolderMensajes> {
         holder.getNombreUsuario().setText(listMensaje.get(position).getNombreU());
         holder.getTextoMensajes().setText(listMensaje.get(position).getMensajeU());
         holder.getHora().setText(listMensaje.get(position).getHoraU());
-
+        Glide.with(contexto).load(listMensaje.get(position).getUrlImagenMensaje()).into(holder.getMensajeDEimagen());
         if (listMensaje.get(position).getTipoMensaje()=="2"){
-            holder.getTextoMensajes().setVisibility(View.VISIBLE);
+            holder.getTextoMensajes().setVisibility(View.GONE);
             holder.getMensajeDEimagen().setVisibility(View.VISIBLE);
-            Glide.with(contexto).load(listMensaje.get(position).getUrlImagenMensaje()).into(holder.getMensajeDEimagen());
+
 
       }else if (listMensaje.get(position).getTipoMensaje()=="1"){
             holder.getTextoMensajes().setVisibility(View.VISIBLE);
